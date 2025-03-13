@@ -5,11 +5,10 @@ const sign = async (req, res) => {
         if (req.user) {
             const userTokenSign = {
                 email: req.user.email,
-                auth: "google",
-                isActive: true,
+                auth: "google"
             }
             const token = signToken(userTokenSign);
-            res.redirect('/?token=' + token);
+            res.redirect('/dashboard?token=' + token);
         } else {
             return res.status(401).json({
                 status: "error", 

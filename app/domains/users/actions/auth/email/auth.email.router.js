@@ -8,5 +8,7 @@ emailAuthRouter.post('/register', emailAuthController.register);
 emailAuthRouter.get('/activate', emailAuthController.activate);
 emailAuthRouter.get('/activation', emailAuthController.activation);
 emailAuthRouter.post('/login', emailAuthController.login);
+emailAuthRouter.post('/forgot-password', emailAuthController.forgot);
+emailAuthRouter.put('/change-password', emailAuthController.change);
 
 module.exports = emailAuthRouter;

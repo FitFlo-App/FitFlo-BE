@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt');
 const signToken = require('../../../../../utils/auth/jwt/sign');
 const verifyJWT = require('../../../../../utils/auth/jwt/verify');
 
-const createUser = require('../../../entities/user.controller').createUser;
 const mailsender = require('../../../../../utils/mail/sender');
 
 const verify = async (req, res) => {
@@ -64,14 +63,14 @@ const verify = async (req, res) => {
             fromaddres: 'FitFlo <noreply@fitflo.site>',
             receipients: email,
             subject: 'Sign in to FitFlo',
-            message: `Hi\n\nPlease click the following link to verify your account registration at FitFlo\n\n\n${req.protocol}://${req.get('host')}/user/auth/email/activate?token=${encodeURIComponent(verificationToken)}\n\n\nIf you did not initiate this registration request, please disregard this email.\n\nThank You.\n\n\n`,
+            message: `Hi\n\nPlease click the following link to verify your account registration at FitFlo\n\n\n${req.get('host') == "localhost:" + (process.env.PORT || "8080") ? "http" : "https"}://${req.get('host')}/user/auth/email/activate?token=${encodeURIComponent(verificationToken)}\n\n\nIf you did not initiate this registration request, please disregard this email.\n\nThank You.\n\n\n`,
             html: false
         });
         return res.status(200).json({
             status: 'success',
             message: 'Email sent. Please check yout inbox',
             data: {
-                verificationCheck: `${req.protocol}://${req.get('host')}/user/auth/email/activation?token=${encodeURIComponent(verificationCheckToken)}`
+                verificationCheck: `${req.get('host') == "localhost:" + (process.env.PORT || "8080") ? "http" : "https"}://${req.get('host')}/user/auth/email/activation?token=${encodeURIComponent(verificationCheckToken)}`
             }
         });
     } catch(err) {
@@ -218,11 +217,17 @@ const register = async (req, res) => {
         getUser.isRegistered = true;
         getUser.save();
 
+        const userTokenSign = {
+            email: email,
+            auth: "email",
+        }
+        
         return res.status(200).json({
             status: 'success',
             message: "Email registration successful",
             data: {
-                email: email
+                email: email,
+                token: signToken(userTokenSign)
             }
         });
     } catch(err) {
@@ -303,12 +308,137 @@ const login = async (req, res) => {
     }
 };
 
+const forgot = async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        if (!email) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Parameter "email" required',
+                data: {}
+            });
+        }
+
+        const getUser = await User.findOne({ email: email });
+    
+        if (!getUser) {
+            return res.status(400).json({
+                status: 'error',
+                message: process.env.DEBUG ? "Email not Found" : "Invalid Credentials",
+                data: {}
+            });
+        }
+
+        if (!getUser.isEmailVerified) {
+            return res.status(400).json({
+                status: 'error',
+                message: process.env.DEBUG ? "Email is not yet verified" : "Invalid Credentials",
+                data: {}
+            });
+        }
+
+        if (!getUser.isRegistered) {
+            return res.status(400).json({
+                status: 'error',
+                message: process.env.DEBUG ? "User is not yet registered" : "Invalid Credentials",
+                data: {}
+            });
+        }
+
+        const verificationToken = signToken({
+            email: email,
+            isForgotPassword: true
+        });
+
+        await mailsender.sendmail({
+            fromaddres: 'FitFlo <noreply@fitflo.site>',
+            receipients: email,
+            subject: 'Password Reset for FitFlo',
+            message: `Hi\n\nPlease click the following link to reset your password at FitFlo\n\n\nhttps://fitflo.site/changepassword?token=${encodeURIComponent(verificationToken)}\n\n\nIf you did not initiate this request, please disregard this email.\n\nThank You.\n\n\n`,
+            html: false
+        });
+        
+        return res.status(200).json({
+            status: 'success',
+            message: 'Email sent. Please check yout inbox',
+            data: {}
+        });
+    } catch(err) {
+        console.error(err);
+        return res.status(400).json({
+            status: 'error',
+            message: process.env.DEBUG ? err.message : "Bad Request",
+            data: {}
+        });
+    } 
+};
+
+const change = async (req, res) => {
+    const { password, token } = req.body;
+
+    if (!password || !token) {
+        return res.status(400).json({
+            status: 'error',
+            message: 'Parameter "password" and "token" required',
+            data: {}
+        });
+    }
+
+    const verification = verifyJWT(token);
+    if (verification.status == "error") {
+        return res.status(401).json({
+            status: "error", 
+            message: "Password Change Token Expired. Please request password reset again.",
+            data: {}
+        });
+    } else {
+        if (verification.data.isForgotPassword) {
+            const getUser = await User.findOne({ email: verification.data.email });
+            if (getUser) {
+                if (!getUser.isRegistered) {
+                    return res.status(400).json({
+                        status: "error", 
+                        message: "User is not registered",
+                        data: {}
+                    });
+                } else {
+                    getUser.password = await bcrypt.hash(password, 10);
+                    getUser.save();
+                    return res.status(200).json({
+                        status: "success", 
+                        message: "User password changed",
+                        data: {}
+                    });
+                }
+            } else {
+                return res.status(401).json({
+                    status: "error", 
+                    message: "Error: User not found",
+                    data: {}
+                });
+            }
+        } else {
+            return res.status(400).json({
+                status: 'error',
+                message: "Invalid Authentication",
+                data: {
+                    email: verification.data.email,
+                    isVerified: false
+                }
+            });
+        }
+    }
+};
+
 const emailAuthController = {
     verify,
     activate,
     activation,
     register,
-    login
+    login,
+    forgot,
+    change
 };
 
 module.exports = emailAuthController;
