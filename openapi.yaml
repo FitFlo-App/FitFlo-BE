@@ -6,11 +6,32 @@ info:
 servers:
   - url: https://api.fitflo.site
 paths:
+  /user/auth/email/verify:
+    post:
+      tags:
+        - user/auth/email
+      summary: Verify email registration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: user@example.com
+      responses:
+        "200":
+          description: Email sent
+        "400":
+          description: Email already registered
   /user/auth/email/register:
     post:
       tags:
         - user/auth/email
-      summary: Register a new user
+      summary: Register a verified email
       requestBody:
         required: true
         content:
@@ -28,9 +49,9 @@ paths:
                   example: "password123"
       responses:
         "200":
-          description: User registered successfully
+          description: User is registered
         "400":
-          description: Bad request, invalid input
+          description: Email is not yet verified
   /user/auth/email/login:
     post:
       tags:
