@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
     height: { type: Number, required: false },
     weight: { type: Number, required: false },
     medicalHistory: { type: String, required: false },
+    lastEmailVerification: { type: Number, required: true, default: 0 },
     isEmailVerified: { type: Boolean, required: true, default: false },
     isRegistered: { type: Boolean, required: true, default: false },
 });

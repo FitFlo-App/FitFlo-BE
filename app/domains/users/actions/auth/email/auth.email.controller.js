@@ -22,15 +22,30 @@ const verify = async (req, res) => {
         const getUser = await User.findOne({ email: email });
     
         if (getUser) {
-            return res.status(400).json({
-                status: 'error',
-                message: process.env.DEBUG ? "Email already registered" : "Bad Request",
-                data: {}
-            });
+            if (getUser.isEmailVerified) {
+                return res.status(400).json({
+                    status: 'error',
+                    message: process.env.DEBUG ? "Email already verified" : "Bad Request",
+                    data: {}
+                });
+            } else {
+                const currentTime = Math.floor(new Date().getTime() / 1000);
+                const timeDiff = currentTime - getUser.lastEmailVerification;
+                if (timeDiff <= 60 * 5) {
+                    return res.status(400).json({
+                        status: 'error',
+                        message: process.env.DEBUG ? `Email verification already sent ${Math.floor(timeDiff / 60)} minutes${timeDiff % 60 > 0 ? " and " + (timeDiff % 60).toString() + " seconds" : ""} ago. Please wait some time` : "Bad Request",
+                        data: {}
+                    });
+                } else {
+                    getUser.lastEmailVerification = currentTime;
+                }
+            }
         } else {
             const newUser = new User({
                 email: email,
-                auth: "email"
+                auth: "email",
+                lastEmailVerification: Math.floor(new Date().getTime() / 1000)
             });
             await newUser.save();
         }
