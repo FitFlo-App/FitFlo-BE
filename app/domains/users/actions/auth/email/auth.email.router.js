@@ -5,6 +5,7 @@ const emailAuthController = require('./auth.email.controller');
 
 emailAuthRouter.post('/login', emailAuthController.login);
 emailAuthRouter.post('/register', emailAuthController.register);
-emailAuthRouter.get('/activate/:token', emailAuthController.activate);
+emailAuthRouter.get('/activate', emailAuthController.activate);
+emailAuthRouter.get('/activation', emailAuthController.activation);
 
 module.exports = emailAuthRouter;
