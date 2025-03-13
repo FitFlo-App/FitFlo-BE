@@ -1,5 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const User = require('../../../entities/user.model').User;
 
 const bcrypt = require('bcrypt');
 const signToken = require('../../../../../utils/auth/jwt/sign');
@@ -20,18 +19,20 @@ const verify = async (req, res) => {
             });
         }
 
-        const user = await prisma.auth.findUnique({
-            where: { email: email },
-        });
+        const getUser = await User.findOne({ email: email });
     
-        if (user) {
+        if (getUser) {
             return res.status(400).json({
                 status: 'error',
                 message: process.env.DEBUG ? "Email already registered" : "Bad Request",
                 data: {}
             });
         } else {
-            await createUser(email, "email", "", true);
+            const newUser = new User({
+                email: email,
+                auth: "email"
+            });
+            await newUser.save();
         }
 
         const verificationToken = signToken({
@@ -74,39 +75,19 @@ const activate = async (req, res) => {
         const verification = verifyJWT(token);
         if (verification.status == "error") {
             res.send("Email Verification Links Expired");
-            // return res.status(401).json({
-            //     status: "error", 
-            //     message: "Unauthorized: Invalid Authentication",
-            //     data: {}
-            // });
         } else {
             if (verification.data.isEmailVerification) {
-                const user = await prisma.auth.findUnique({
-                    where: { email: verification.data.email },
-                });
-                if (user) {
-                    if (!user.isActive) {
-                        await prisma.auth.update({
-                            where: { email: verification.data.email },
-                            data: { isActive: true },
-                        });
+                const getUser = await User.findOne({ email: verification.data.email });
+                if (getUser) {
+                    if (!getUser.isEmailVerified) {
+                        getUser.isEmailVerified = true;
+                        await getUser.save();   
                         res.send("Email Verified");
                     } else {
                         res.send("Email Already Verified");
-                        // const refreshedToken = signToken({
-                        //     email: verification.data.email,
-                        //     auth: "email",
-                        //     isActive: true
-                        // });
-                        // res.redirect('/?token=' + refreshedToken);
                     }
                 } else {
                     res.send("Unauthorized: Invalid Authentication");
-                    // return res.status(401).json({
-                    //     status: "error", 
-                    //     message: "Unauthorized: Invalid Authentication",
-                    //     data: {}
-                    // });
                 }
             } else {
                 res.send("Unauthorized: Invalid Authentication");
@@ -115,11 +96,6 @@ const activate = async (req, res) => {
     } catch (err) {
         console.error(err);
         res.send(process.env.DEBUG ? err.message : "Bad Request");
-        // return res.status(400).json({
-        //     status: 'error',
-        //     message: process.env.DEBUG ? err.message : "Bad Request",
-        //     data: {}
-        // });
     }
 };
 
@@ -138,16 +114,14 @@ const activation = async (req, res) => {
             });
         } else {
             if (!verification.data.isVerified) {
-                const user = await prisma.auth.findUnique({
-                    where: { email: verification.data.email },
-                });
-                if (user) {
-                    if (!user.isActive) {
+                const getUser = await User.findOne({ email: verification.data.email });
+                if (getUser) {
+                    if (!getUser.isEmailVerified) {
                         return res.status(200).json({
                             status: "success", 
                             message: "User still not verified",
                             data: {
-                                email: user.email,
+                                email: getUser.email,
                                 isVerified: false
                             }
                         });
@@ -156,7 +130,7 @@ const activation = async (req, res) => {
                             status: "success", 
                             message: "User is verified",
                             data: {
-                                email: user.email,
+                                email: getUser.email,
                                 isVerified: true
                             }
                         });
@@ -199,19 +173,17 @@ const register = async (req, res) => {
     try {
         const { email, password } = req.body;
         
-        if (!email) {
+        if (!email || !password) {
             return res.status(400).json({
                 status: 'error',
-                message: 'Parameter "email" required',
+                message: 'Parameter "email" and "password" required',
                 data: {}
             });
         }
 
-        const user = await prisma.auth.findUnique({
-            where: { email: email },
-        });
+        const getUser = await User.findOne({ email: email });
     
-        if (!user || !user.isActive) {
+        if (!getUser || !getUser.isEmailVerified) {
             return res.status(400).json({
                 status: 'error',
                 message: "Email is not yet verified",
@@ -219,7 +191,7 @@ const register = async (req, res) => {
             });
         }
 
-        if (user.password != "") {
+        if (getUser.isRegistered) {
             return res.status(400).json({
                 status: 'error',
                 message: "User is registered",
@@ -227,10 +199,9 @@ const register = async (req, res) => {
             });
         }
 
-        await prisma.auth.update({
-            where: { email: email },
-            data: { password: await bcrypt.hash(password, 10) },
-        });
+        getUser.password = await bcrypt.hash(password, 10);
+        getUser.isRegistered = true;
+        getUser.save();
 
         return res.status(200).json({
             status: 'success',
@@ -252,11 +223,18 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     try {
         const { email, password } = req.body;
-        const user = await prisma.auth.findUnique({
-            where: { email: email },
-        });
+
+        if (!email || !password) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Parameter "email" and "password" required',
+                data: {}
+            });
+        }
+
+        const getUser = await User.findOne({ email: email });
     
-        if (!user) {
+        if (!getUser) {
             return res.status(400).json({
                 status: 'error',
                 message: process.env.DEBUG ? "Email not Found" : "Invalid Credentials",
@@ -264,7 +242,7 @@ const login = async (req, res) => {
             });
         }
 
-        if (!user.isActive) {
+        if (!getUser.isEmailVerified) {
             return res.status(400).json({
                 status: 'error',
                 message: "Email is not yet verified",
@@ -272,7 +250,7 @@ const login = async (req, res) => {
             });
         }
 
-        if (user.password == "") {
+        if (!getUser.isRegistered) {
             return res.status(400).json({
                 status: 'error',
                 message: "User is verified, but not registered",
@@ -280,11 +258,10 @@ const login = async (req, res) => {
             });
         }
 
-        if (bcrypt.compareSync(password, user.password)) {
+        if (bcrypt.compareSync(password, getUser.password)) {
             const userTokenSign = {
                 email: email,
                 auth: "email",
-                isActive: true,
             }
             return res.status(200).json({
                 status: 'success',

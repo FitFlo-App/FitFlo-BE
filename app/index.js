@@ -1,6 +1,9 @@
 require('dotenv').config();
 
-const redisClient = require('./configs/cache/redis/cache').client;
+const mongodb = require('./configs/database/mongodb/mongodb.client');
+mongodb.connectDB();
+
+const redisClient = require('./configs/cache/redis/redis.client').client;
 redisClient.connect()
   .then(() => console.log('Connected to Redis'))
   .catch((err) => console.error('Failed to connect to Redis:', err));

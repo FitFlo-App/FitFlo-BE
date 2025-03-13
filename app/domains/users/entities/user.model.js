@@ -1,18 +1,17 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    name: { type: String, required: true },
     email: { type: String, required: true },
-    auth: {
-        type: [String],
-        enum: ['google', 'email'],
-        required: true,
-    },
-    picture: { type: String, required: true },
-    isActive: { type: Boolean, required: true, default: false },
-    walletAddress: { type: String, required: true },
-    encryptedSecretKey: { type: String, required: true },
-    encryptedSecretKeyBackup: { type: String, required: true }
+    password: { type: String, required: false },
+    fullname: { type: String, required: false },
+    auth: { type: String, enum: ['google', 'email'], required: true },
+    gender: { type: String, enum: ['male', 'female'], required: false },
+    birthDate: { type: Date, required: false},
+    height: { type: Number, required: false },
+    weight: { type: Number, required: false },
+    medicalHistory: { type: String, required: false },
+    isEmailVerified: { type: Boolean, required: true, default: false },
+    isRegistered: { type: Boolean, required: true, default: false },
 });
 
 const User = mongoose.model("User", userSchema);

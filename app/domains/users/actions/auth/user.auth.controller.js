@@ -35,8 +35,7 @@ const refresh = async (req, res) => {
             email: req.user.email,
             token: signToken({
                 email: req.user.email,
-                auth: req.user.auth,
-                isActive: req.user.isActive
+                auth: req.user.auth
             })
         }
     });

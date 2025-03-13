@@ -1,5 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const User = require('../../../domains/users/entities/user.model').User;
 
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
 const createUser = require('../../../domains/users/entities/user.controller').createUser;
@@ -11,14 +10,16 @@ const Strategy = new GoogleStrategy({
     passReqToCallback: true,
 }, async function(request, accessToken, refreshToken, profile, done) {
     try {
-        const user = await prisma.auth.findUnique({
-            where: { email: profile.email },
-        });
-    
-        if (!user) {
-            await createUser(profile.email, "google", null, true);
+        const getUser = await User.findOne({ email: profile.email });
+        if (!getUser) {
+            const newUser = new User({
+                email: profile.email,
+                auth: "google",
+                isEmailVerified: true,
+                isRegistered: true
+            });
+            await newUser.save();
         }
-        
         return done(null, profile);
     } catch (err) {
         console.error(err);
