@@ -31,20 +31,24 @@ const verifyToken = require('./middlewares/auth/jwt/jwt.verify');
 const userRouter = require('./domains/users/entities/user.router');
 app.use('/user', userRouter);
 
-app.get('/', (req, res) => {
-    if (req.user) {
-        res.send(`Hello ${req.user.email}\n\nJWT Token (from "token" GET param): <br/><br/><textarea>${req.query.token}</textarea>`);
-    } else {
-        if (req.query.token) {
-            res.send(`JWT Token (from "token" GET param): <br/><br/><textarea>${req.query.token}</textarea>`);
-        } else {
-            res.send("<a href='/user/auth/google'>Login with google</a>");   
-        }
-    }
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, 'templates/pages/index.html'));
 });
 
-app.get('/protected', verifyToken, (req, res) => {
-    res.send(`Hello ${req.user.email}`);
-});
+// app.get('/', (req, res) => {
+//     if (req.user) {
+//         res.send(`Hello ${req.user.email}\n\nJWT Token (from "token" GET param): <br/><br/><textarea>${req.query.token}</textarea>`);
+//     } else {
+//         if (req.query.token) {
+//             res.send(`JWT Token (from "token" GET param): <br/><br/><textarea>${req.query.token}</textarea>`);
+//         } else {
+//             res.send("<a href='/user/auth/google'>Login with google</a>");   
+//         }
+//     }
+// });
+
+// app.get('/protected', verifyToken, (req, res) => {
+//     res.send(`Hello ${req.user.email}`);
+// });
 
 module.exports = app;

@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Swagger UI</title>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:300,600|Titillium+Web:400,600,700" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/3.43.0/swagger-ui.css" >
+  <style>
+    html
+    {
+      box-sizing: border-box;
+      overflow: -moz-scrollbars-vertical;
+      overflow-y: scroll;
+    }
+    *,
+    *:before,
+    *:after
+    {
+      box-sizing: inherit;
+    }
+    body {
+      margin:0;
+      background: #fafafa;
+    }
+  </style>
+</head>
+<body>
+<div id="swagger-ui"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/3.43.0/swagger-ui-bundle.js"> </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/3.43.0/swagger-ui-standalone-preset.js"> </script>
+<script>
+window.onload = function() {
+  var spec = {"openapi": "3.0.0", "info": {"title": "FitFlo Core API", "description": "API for FitFlo AI Health Path Optimizer", "version": "1.0.0"}, "servers": [{"url": "https://api.fitflo.site"}], "paths": {"/user/auth/email/register": {"post": {"tags": ["user/auth/email"], "summary": "Register a new user", "requestBody": {"required": true, "content": {"application/json": {"schema": {"type": "object", "properties": {"email": {"type": "string", "format": "email", "example": "user@example.com"}, "password": {"type": "string", "format": "password", "example": "password123"}}}}}}, "responses": {"200": {"description": "User registered successfully"}, "400": {"description": "Bad request, invalid input"}}}}, "/user/auth/email/login": {"post": {"tags": ["user/auth/email"], "summary": "Login a user", "requestBody": {"required": true, "content": {"application/json": {"schema": {"type": "object", "properties": {"email": {"type": "string", "format": "email", "example": "user@example.com"}, "password": {"type": "string", "format": "password", "example": "password123"}}}}}}, "responses": {"200": {"description": "User logged in successfully"}, "401": {"description": "Unauthorized, invalid credentials"}}}}, "/user/auth/email/refresh": {"get": {"tags": ["user/auth/email"], "summary": "Refresh authentication token", "security": [{"bearerAuth": []}], "responses": {"200": {"description": "Token refreshed successfully"}, "401": {"description": "Unauthorized, invalid or expired token"}}}}}, "components": {"securitySchemes": {"bearerAuth": {"type": "http", "scheme": "bearer", "bearerFormat": "JWT"}}}};
+  // Build a system
+  const ui = SwaggerUIBundle({
+    spec: spec,
+    dom_id: '#swagger-ui',
+    deepLinking: true,
+    presets: [
+      SwaggerUIBundle.presets.apis,
+      SwaggerUIStandalonePreset
+    ],
+    plugins: [
+      SwaggerUIBundle.plugins.DownloadUrl
+    ],
+    layout: "StandaloneLayout"
+  })
+  window.ui = ui
+}
+</script>
+</body>
+</html>
