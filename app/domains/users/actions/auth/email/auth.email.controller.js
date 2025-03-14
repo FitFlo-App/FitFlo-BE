@@ -355,7 +355,7 @@ const forgot = async (req, res) => {
             fromaddres: 'FitFlo <noreply@fitflo.site>',
             receipients: email,
             subject: 'Password Reset for FitFlo',
-            message: `Hi\n\nPlease click the following link to reset your password at FitFlo\n\n\nhttps://fitflo.site/changepassword?token=${encodeURIComponent(verificationToken)}\n\n\nIf you did not initiate this request, please disregard this email.\n\nThank You.\n\n\n`,
+            message: `Hi\n\nPlease click the following link to reset your password at FitFlo\n\n\n${process.env.FE_HOST}/changepassword?token=${encodeURIComponent(verificationToken)}\n\n\nIf you did not initiate this request, please disregard this email.\n\nThank You.\n\n\n`,
             html: false
         });
         

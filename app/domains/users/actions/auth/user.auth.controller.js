@@ -8,7 +8,7 @@ const sign = async (req, res) => {
                 auth: "google"
             }
             const token = signToken(userTokenSign);
-            res.redirect('https://fitflo.site/oauth-callback?token=' + token);
+            res.redirect(process.env.FE_HOST + '/oauth-callback?token=' + token);
         } else {
             return res.status(401).json({
                 status: "error", 
