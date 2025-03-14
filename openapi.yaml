@@ -24,9 +24,44 @@ paths:
                   example: user@example.com
       responses:
         "200":
-          description: Email sent
+          description: Email sent.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    exampe: success
+                  message:
+                    type: string
+                    example: Email sent. Please check yout inbox
+                  data:
+                    type: object
+                    properties:
+                      verificationCheck:
+                        type: string
+                        format: URL
+                        example: https://api.fitflo.site/user/auth/email/activation?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRldkBmaXRmbG8uc2l0ZSIsImlzVmVyaWZpZWQiOmZhbHNlLCJpYXQiOjE3NDE5MTY3MzEsImV4cCI6MTc0MTkzMTEzMX0.0pilDYxCLIuFT1JG9wZ2TGFzgUIhwTMbDOQ6YzUknJs
         "400":
           description: Email already registered
+  /user/auth/email/activation:
+    get:
+      tags:
+        - user/auth/email
+      summary: Check email verification status
+      parameters:
+        - name: token
+          in: query
+          required: true
+          description: JWT token obtained from /verify request
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User is verified
+        "400":
+          description: User still not verified
   /user/auth/email/register:
     post:
       tags:
@@ -77,10 +112,55 @@ paths:
           description: User logged in successfully
         "401":
           description: Unauthorized, invalid credentials
-  /user/auth/email/refresh:
-    get:
+  /user/auth/email/forgot-password:
+    post:
       tags:
         - user/auth/email
+      summary: Reset forgotten password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: user@example.com
+      responses:
+        "200":
+          description: Email sent. Please check yout inbox
+        "401":
+          description: Email not found
+  /user/auth/email/change-password:
+    put:
+      tags:
+        - user/auth/email
+      summary: Change forgotten password after the email verified
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  format: password
+                  example: "newpass"
+                token:
+                  type: string
+                  example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRldkBmaXRmbG8uc2l0ZSIsImF1dGgiOiJlbWFpbCIsImlhdCI6MTc0MTkxNjc3NiwiZXhwIjoxNzQxOTMxMTc2fQ.kvBAlh25YCECL1X4qn5ye2U8jMRhl_alOAd98rz22JY"
+      responses:
+        "200":
+          description: Email sent. Please check yout inbox
+        "401":
+          description: Email not found
+  /user/auth/refresh-token:
+    get:
+      tags:
+        - user/auth
       summary: Refresh authentication token
       security:
         - bearerAuth: []

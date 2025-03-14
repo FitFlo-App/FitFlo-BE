@@ -15,7 +15,9 @@ app.use(cors({
         'http://localhost:80',
         'http://localhost:8080',
         'http://localhost:4173',
-        'http://localhost:5173'
+        'http://localhost:5173',
+        'https://fitflo.site',
+        'https://api.fitflo.site'
     ],
 }));
 app.use(session({
@@ -34,21 +36,5 @@ app.use('/user', userRouter);
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'templates/pages/index.html'));
 });
-
-// app.get('/', (req, res) => {
-//     if (req.user) {
-//         res.send(`Hello ${req.user.email}\n\nJWT Token (from "token" GET param): <br/><br/><textarea>${req.query.token}</textarea>`);
-//     } else {
-//         if (req.query.token) {
-//             res.send(`JWT Token (from "token" GET param): <br/><br/><textarea>${req.query.token}</textarea>`);
-//         } else {
-//             res.send("<a href='/user/auth/google'>Login with google</a>");   
-//         }
-//     }
-// });
-
-// app.get('/protected', verifyToken, (req, res) => {
-//     res.send(`Hello ${req.user.email}`);
-// });
 
 module.exports = app;

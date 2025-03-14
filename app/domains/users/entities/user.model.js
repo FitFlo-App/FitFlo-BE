@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
     lastEmailVerification: { type: Number, required: true, default: 0 },
     isEmailVerified: { type: Boolean, required: true, default: false },
     isRegistered: { type: Boolean, required: true, default: false },
+    isProfileCreated: { type: Boolean, required: true, default: false },
 });
 
 const User = mongoose.model("User", userSchema);
