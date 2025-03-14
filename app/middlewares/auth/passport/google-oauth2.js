@@ -1,7 +1,5 @@
 const User = require('../../../domains/users/entities/user.model').User;
-
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
-const createUser = require('../../../domains/users/entities/user.controller').createUser;
 
 const Strategy = new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,

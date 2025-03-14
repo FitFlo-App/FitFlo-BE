@@ -424,23 +424,23 @@ paths:
                     type: object
                     properties:
                       fullname:
-                      type: string
-                      example: John Doe
-                    gender:
-                      type: string
-                      example: male
-                    birthDate:
-                      type: string
-                      example: "2000-01-01"
-                    height:
-                      type: integer
-                      example: 175
-                    weight:
-                      type: integer
-                      example: 65
-                    medicalHistory:
-                      type: string
-                      example: Chronic lymphocytic leukemia
+                        type: string
+                        example: John Doe
+                      gender:
+                        type: string
+                        example: male
+                      birthDate:
+                        type: string
+                        example: "2000-01-01"
+                      height:
+                        type: integer
+                        example: 175
+                      weight:
+                        type: integer
+                        example: 65
+                      medicalHistory:
+                        type: string
+                        example: Chronic lymphocytic leukemia
         "400":
           description: Profile already created
           content:
@@ -480,24 +480,27 @@ paths:
                   data:
                     type: object
                     properties:
+                      isProfileCreated:
+                        type: boolean
+                        example: true
                       fullname:
-                      type: string
-                      example: John Doe
-                    gender:
-                      type: string
-                      example: male
-                    birthDate:
-                      type: string
-                      example: "2000-01-01"
-                    height:
-                      type: integer
-                      example: 175
-                    weight:
-                      type: integer
-                      example: 65
-                    medicalHistory:
-                      type: string
-                      example: Chronic lymphocytic leukemia
+                        type: string
+                        example: John Doe
+                      gender:
+                        type: string
+                        example: male
+                      birthDate:
+                        type: string
+                        example: "2000-01-01"
+                      height:
+                        type: integer
+                        example: 175
+                      weight:
+                        type: integer
+                        example: 65
+                      medicalHistory:
+                        type: string
+                        example: Chronic lymphocytic leukemia
         "401":
           description: Invalid token or JWT token expired
           content:
@@ -563,23 +566,23 @@ paths:
                     type: object
                     properties:
                       fullname:
-                      type: string
-                      example: John Doe
-                    gender:
-                      type: string
-                      example: male
-                    birthDate:
-                      type: string
-                      example: "2000-01-01"
-                    height:
-                      type: integer
-                      example: 175
-                    weight:
-                      type: integer
-                      example: 65
-                    medicalHistory:
-                      type: string
-                      example: Chronic lymphocytic leukemia
+                        type: string
+                        example: John Doe
+                      gender:
+                        type: string
+                        example: male
+                      birthDate:
+                        type: string
+                        example: "2000-01-01"
+                      height:
+                        type: integer
+                        example: 175
+                      weight:
+                        type: integer
+                        example: 65
+                      medicalHistory:
+                        type: string
+                        example: Chronic lymphocytic leukemia
         "400":
           description: Profile is not created yet
           content:

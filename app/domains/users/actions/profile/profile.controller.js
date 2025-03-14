@@ -67,6 +67,7 @@ const read = async (req, res) => {
                 status: 'success',
                 message: "Profile successfully read.",
                 data: {
+                    isProfileCreated: getUser.isProfileCreated || false,
                     fullname: getUser.fullname || null,
                     gender: getUser.gender || null,
                     birthDate: getUser.birthDate || null,

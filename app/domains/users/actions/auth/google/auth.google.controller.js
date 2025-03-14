@@ -17,7 +17,7 @@ const callback = passport.authenticate( 'google', {
 const logout = (req, res) => {
     req.logout();
     req.session.destroy();
-    res.redirect("/");
+    res.redirect("https://fitflo.site/");
 }
 
 const failure = (req, res) => {
