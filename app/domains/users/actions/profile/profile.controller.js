@@ -27,12 +27,12 @@ const create = async (req, res) => {
                     status: 'success',
                     message: "Profile successfully created.",
                     data: {
-                        fullname: fullname || "",
-                        gender: gender || "",
-                        birthDate: birthDate || "",
-                        height: height || "",
-                        weight: weight || "",
-                        medicalHistory: medicalHistory || ""
+                        fullname: fullname || null,
+                        gender: gender || null,
+                        birthDate: birthDate || null,
+                        height: height || null,
+                        weight: weight || null,
+                        medicalHistory: medicalHistory || null
                     }
                 });
             } else {
@@ -67,12 +67,12 @@ const read = async (req, res) => {
                 status: 'success',
                 message: "Profile successfully read.",
                 data: {
-                    fullname: getUser.fullname || "",
-                    gender: getUser.gender || "",
-                    birthDate: getUser.birthDate || "",
-                    height: getUser.height || "",
-                    weight: getUser.weight || "",
-                    medicalHistory: getUser.medicalHistory || ""
+                    fullname: getUser.fullname || null,
+                    gender: getUser.gender || null,
+                    birthDate: getUser.birthDate || null,
+                    height: getUser.height || null,
+                    weight: getUser.weight || null,
+                    medicalHistory: getUser.medicalHistory || null
                 }
             });
         } else {
@@ -118,12 +118,12 @@ const update = async (req, res) => {
                     status: 'success',
                     message: "Profile successfully updated.",
                     data: {
-                        fullname: fullname || "",
-                        gender: gender || "",
-                        birthDate: birthDate || "",
-                        height: height || "",
-                        weight: weight || "",
-                        medicalHistory: medicalHistory || ""
+                        fullname: fullname || null,
+                        gender: gender || null,
+                        birthDate: birthDate || null,
+                        height: height || null,
+                        weight: weight || null,
+                        medicalHistory: medicalHistory || null
                     }
                 });
             } else {

@@ -58,7 +58,6 @@ paths:
                     example: Email already verified
                   data:
                     type: object
-                    properties:
   /user/auth/email/activation:
     get:
       tags:
@@ -177,7 +176,6 @@ paths:
                     example: User is registered
                   data:
                     type: object
-                    properties:
   /user/auth/email/login:
     post:
       tags:
@@ -237,7 +235,6 @@ paths:
                     example: Unauthorized, invalid credentials
                   data:
                     type: object
-                    properties:
   /user/auth/email/forgot-password:
     post:
       tags:
@@ -270,7 +267,6 @@ paths:
                     example: Email sent. Please check yout inbox
                   data:
                     type: object
-                    properties:
         "400":
           description: Email not found
           content:
@@ -286,7 +282,6 @@ paths:
                     example: Email not found
                   data:
                     type: object
-                    properties:
   /user/auth/email/change-password:
     put:
       tags:
@@ -322,7 +317,6 @@ paths:
                     example: User password changed
                   data:
                     type: object
-                    properties:
         "400":
           description: Password Change Token Expired
           content:
@@ -338,7 +332,6 @@ paths:
                     example: Password Change Token Expired. Please request password reset again.
                   data:
                     type: object
-                    properties:
   /user/auth/refresh-token:
     get:
       tags:
@@ -381,7 +374,227 @@ paths:
                     example: jwt expired
                   data:
                     type: object
+  /user/profile/create:
+    post:
+      tags:
+        - user/profile
+      summary: Create profile
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fullname:
+                  type: string
+                  example: John Doe
+                gender:
+                  type: string
+                  example: male
+                birthDate:
+                  type: string
+                  example: "2000-01-01"
+                height:
+                  type: integer
+                  example: 175
+                weight:
+                  type: integer
+                  example: 65
+                medicalHistory:
+                  type: string
+                  example: Chronic lymphocytic leukemia
+      responses:
+        "200":
+          description: Profile successfully created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Profile successfully created.
+                  data:
+                    type: object
                     properties:
+                      fullname:
+                      type: string
+                      example: John Doe
+                    gender:
+                      type: string
+                      example: male
+                    birthDate:
+                      type: string
+                      example: "2000-01-01"
+                    height:
+                      type: integer
+                      example: 175
+                    weight:
+                      type: integer
+                      example: 65
+                    medicalHistory:
+                      type: string
+                      example: Chronic lymphocytic leukemia
+        "400":
+          description: Profile already created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: Profile already created. Use profile update method to update data.
+                  data:
+                    type: object
+  /user/profile/read:
+    get:
+      tags:
+        - user/profile
+      summary: Read profile
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Profile successfully read
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Profile successfully read
+                  data:
+                    type: object
+                    properties:
+                      fullname:
+                      type: string
+                      example: John Doe
+                    gender:
+                      type: string
+                      example: male
+                    birthDate:
+                      type: string
+                      example: "2000-01-01"
+                    height:
+                      type: integer
+                      example: 175
+                    weight:
+                      type: integer
+                      example: 65
+                    medicalHistory:
+                      type: string
+                      example: Chronic lymphocytic leukemia
+        "401":
+          description: Invalid token or JWT token expired
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: Invalid token
+                  data:
+                    type: object
+  /user/profile/update:
+    put:
+      tags:
+        - user/profile
+      summary: Update profile
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fullname:
+                  type: string
+                  example: John Doe
+                gender:
+                  type: string
+                  example: male
+                birthDate:
+                  type: string
+                  example: "2000-01-01"
+                height:
+                  type: integer
+                  example: 175
+                weight:
+                  type: integer
+                  example: 65
+                medicalHistory:
+                  type: string
+                  example: Chronic lymphocytic leukemia
+      responses:
+        "200":
+          description: Profile successfully updated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Profile successfully updated.
+                  data:
+                    type: object
+                    properties:
+                      fullname:
+                      type: string
+                      example: John Doe
+                    gender:
+                      type: string
+                      example: male
+                    birthDate:
+                      type: string
+                      example: "2000-01-01"
+                    height:
+                      type: integer
+                      example: 175
+                    weight:
+                      type: integer
+                      example: 65
+                    medicalHistory:
+                      type: string
+                      example: Chronic lymphocytic leukemia
+        "400":
+          description: Profile is not created yet
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: Profile is not created yet. Use profile create method to update data.
+                  data:
+                    type: object
 components:
   securitySchemes:
     bearerAuth:
