@@ -28,10 +28,11 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-const verifyToken = require('./middlewares/auth/jwt/jwt.verify');
-
 const userRouter = require('./domains/users/entities/user.router');
 app.use('/user', userRouter);
+
+const serviceRouter = require('./domains/services/entities/services.router');
+app.use('/service', serviceRouter);
 
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'templates/pages/index.html'));

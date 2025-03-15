@@ -1,8 +1,11 @@
-const User = require('../../entities/user.model').User;
+const { get } = require('mongoose');
+
+const User = require('../entities/user.model').User;
+const Service = require('../../services/entities/services.model').Service;
 
 const create = async (req, res) => {
     try {
-        const { fullname, gender, birthDate, height, weight, medicalHistory } = req.body;
+        const { fullname, gender, birthDate, height, weight, medicalHistory, phone, location } = req.body;
         const getUser = await User.findOne({ email: req.user.email });
         if (getUser) {
             if (!getUser.isProfileCreated) {
@@ -21,8 +24,16 @@ const create = async (req, res) => {
                 getUser.height = height;
                 getUser.weight = weight;
                 getUser.medicalHistory = medicalHistory;
+                getUser.phone = phone;
+                getUser.location = location;
                 getUser.isProfileCreated = true;
                 await getUser.save();
+
+                const newService = new Service({
+                    email: email
+                });
+                await newService.save();
+
                 return res.status(200).json({
                     status: 'success',
                     message: "Profile successfully created.",
@@ -32,7 +43,9 @@ const create = async (req, res) => {
                         birthDate: birthDate || null,
                         height: height || null,
                         weight: weight || null,
-                        medicalHistory: medicalHistory || null
+                        medicalHistory: medicalHistory || null,
+                        phone: getUser.phone || null,
+                        location: getUser.location || null
                     }
                 });
             } else {
@@ -73,7 +86,9 @@ const read = async (req, res) => {
                     birthDate: getUser.birthDate || null,
                     height: getUser.height || null,
                     weight: getUser.weight || null,
-                    medicalHistory: getUser.medicalHistory || null
+                    medicalHistory: getUser.medicalHistory || null,
+                    phone: getUser.phone || null,
+                    location: getUser.location || null
                 }
             });
         } else {
@@ -95,7 +110,7 @@ const read = async (req, res) => {
 
 const update = async (req, res) => {
     try {
-        const { fullname, gender, birthDate, height, weight, medicalHistory } = req.body;
+        const { fullname, gender, birthDate, height, weight, medicalHistory, phone, location } = req.body;
         const getUser = await User.findOne({ email: req.user.email });
         if (getUser) {
             if (getUser.isProfileCreated) {
@@ -124,7 +139,9 @@ const update = async (req, res) => {
                         birthDate: birthDate || null,
                         height: height || null,
                         weight: weight || null,
-                        medicalHistory: medicalHistory || null
+                        medicalHistory: medicalHistory || null,
+                        phone: getUser.phone || null,
+                        location: getUser.location || null
                     }
                 });
             } else {

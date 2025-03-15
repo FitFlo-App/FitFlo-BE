@@ -13,6 +13,7 @@ const Strategy = new GoogleStrategy({
             const newUser = new User({
                 email: profile.email,
                 auth: "google",
+                picture: profile.picture,
                 isEmailVerified: true,
                 isRegistered: true
             });

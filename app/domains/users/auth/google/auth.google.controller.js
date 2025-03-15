@@ -1,5 +1,5 @@
 const passport = require('passport');
-const googleAuth = require('../../../../../middlewares/auth/passport/google-oauth2');
+const googleAuth = require('../../../../middlewares/auth/passport/google-oauth2');
 
 passport.use(googleAuth.Strategy);
 passport.serializeUser(googleAuth.serializeUser);

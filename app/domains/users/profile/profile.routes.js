@@ -1,7 +1,7 @@
 const express = require('express');
 const profileRouter = express.Router();
 
-const verifyToken = require('../../../../middlewares/auth/jwt/jwt.verify');
+const verifyToken = require('../../../middlewares/auth/jwt/jwt.verify');
 
 const profileController = require('./profile.controller');
 

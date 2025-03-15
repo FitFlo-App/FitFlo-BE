@@ -1,10 +1,10 @@
-const User = require('../../../entities/user.model').User;
+const User = require('../../entities/user.model').User;
 
 const bcrypt = require('bcrypt');
-const signToken = require('../../../../../utils/auth/jwt/sign');
-const verifyJWT = require('../../../../../utils/auth/jwt/verify');
+const signToken = require('../../../../utils/auth/jwt/sign');
+const verifyJWT = require('../../../../utils/auth/jwt/verify');
 
-const mailsender = require('../../../../../utils/mail/sender');
+const mailsender = require('../../../../utils/mail/sender');
 
 const verify = async (req, res) => {
     try {
@@ -375,59 +375,68 @@ const forgot = async (req, res) => {
 };
 
 const change = async (req, res) => {
-    const { password, token } = req.body;
+    try {
+        const { password, token } = req.body;
 
-    if (!password || !token) {
-        return res.status(400).json({
-            status: 'error',
-            message: 'Parameter "password" and "token" required',
-            data: {}
-        });
-    }
+        if (!password || !token) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Parameter "password" and "token" required',
+                data: {}
+            });
+        }
 
-    const verification = verifyJWT(token);
-    if (verification.status == "error") {
-        return res.status(401).json({
-            status: "error", 
-            message: "Password Change Token Expired. Please request password reset again.",
-            data: {}
-        });
-    } else {
-        if (verification.data.isForgotPassword) {
-            const getUser = await User.findOne({ email: verification.data.email });
-            if (getUser) {
-                if (!getUser.isRegistered) {
-                    return res.status(400).json({
-                        status: "error", 
-                        message: "User is not registered",
-                        data: {}
-                    });
+        const verification = verifyJWT(token);
+        if (verification.status == "error") {
+            return res.status(401).json({
+                status: "error", 
+                message: "Password Change Token Expired. Please request password reset again.",
+                data: {}
+            });
+        } else {
+            if (verification.data.isForgotPassword) {
+                const getUser = await User.findOne({ email: verification.data.email });
+                if (getUser) {
+                    if (!getUser.isRegistered) {
+                        return res.status(400).json({
+                            status: "error", 
+                            message: "User is not registered",
+                            data: {}
+                        });
+                    } else {
+                        getUser.password = await bcrypt.hash(password, 10);
+                        getUser.save();
+                        return res.status(200).json({
+                            status: "success", 
+                            message: "User password changed",
+                            data: {}
+                        });
+                    }
                 } else {
-                    getUser.password = await bcrypt.hash(password, 10);
-                    getUser.save();
-                    return res.status(200).json({
-                        status: "success", 
-                        message: "User password changed",
+                    return res.status(401).json({
+                        status: "error", 
+                        message: "Error: User not found",
                         data: {}
                     });
                 }
             } else {
-                return res.status(401).json({
-                    status: "error", 
-                    message: "Error: User not found",
-                    data: {}
+                return res.status(400).json({
+                    status: 'error',
+                    message: "Invalid Authentication",
+                    data: {
+                        email: verification.data.email,
+                        isVerified: false
+                    }
                 });
             }
-        } else {
-            return res.status(400).json({
-                status: 'error',
-                message: "Invalid Authentication",
-                data: {
-                    email: verification.data.email,
-                    isVerified: false
-                }
-            });
         }
+    } catch(err) {
+        console.error(err);
+        return res.status(400).json({
+            status: 'error',
+            message: process.env.DEBUG ? err.message : "Bad Request",
+            data: {}
+        });
     }
 };
 

@@ -1,4 +1,4 @@
-const signToken = require('../../../../utils/auth/jwt/sign');
+const signToken = require('../../../utils/auth/jwt/sign');
 
 const sign = async (req, res) => {
     try {
