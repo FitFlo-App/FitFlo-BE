@@ -6,7 +6,9 @@ const serviceSchema = new mongoose.Schema({
         chatData: [{
             message: { type: String, required: true },
             role: { type: String, enum: ['user', 'assistant'], required: true },
-            suspectedDisease: { type: String, required: false }
+            model: { type: String, required: false },
+            disease: { type: String, required: false },
+            diseaseSource: { type: String, required: false }
         }]
     }]
 });

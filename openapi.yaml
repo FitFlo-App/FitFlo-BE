@@ -5,6 +5,9 @@ info:
   version: 1.0.0
 servers:
   - url: https://api.fitflo.site
+    description: Production Server
+  - url: http://localhost:8080
+    description: Local Development Server
 paths:
   /user/auth/email/verify:
     post:
@@ -598,6 +601,164 @@ paths:
                     example: Profile is not created yet. Use profile create method to update data.
                   data:
                     type: object
+  /service/pathway/create-chat:
+    post:
+      tags:
+        - service/pathway
+      summary: Create a new pathway chat session
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - message
+              properties:
+                model:
+                  type: string
+                  example: "qwen/qwq-32b:free"
+                message:
+                  type: string
+                  example: "I have a shortness of breath even when performing simple activities like walking"
+      responses:
+        "200":
+          description: Chat session successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Successfully process user chat"
+                  data:
+                    type: object
+                    properties:
+                      chatId:
+                        type: string
+                        example: "67d66263b7ec6a2befc58c1d"
+                      model:
+                        type: string
+                        example: "qwen/qwq-32b:free"
+                      response:
+                        type: string
+                        example: "Shortness of breath with simple activities could indicate a serious condition."
+                      disease:
+                        type: string
+                        example: "Pancreatitis"
+                      diseaseSource:
+                        type: string
+                        example: "Intersystems IRIS"
+  
+  /service/pathway/read-chat:
+    get:
+      tags:
+        - service/pathway
+      summary: Read pathway chat history
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: chatId
+          in: query
+          required: true
+          schema:
+            type: string
+          example: "67d66263b7ec6a2befc58c1d"
+      responses:
+        "200":
+          description: Successfully retrieved chat history
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: ""
+                  data:
+                    type: object
+                    properties:
+                      chats:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            message:
+                              type: string
+                              example: "I have a shortness of breath even when performing simple activities like walking"
+                            role:
+                              type: string
+                              example: "user"
+                            suspectedDisease:
+                              type: string
+                              example: "Pancreatitis"
+  /service/pathway/continue-chat:
+    put:
+      tags:
+        - service/pathway
+      summary: Continue an existing chat session
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - chatId
+                - model
+                - message
+              properties:
+                chatId:
+                  type: string
+                  example: "67d66263b7ec6a2befc58c1d"
+                model:
+                  type: string
+                  example: "qwen/qwq-32b:free"
+                message:
+                  type: string
+                  example: "I don't think it's Pancreatitis"
+      responses:
+        "200":
+          description: Chat successfully updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Successfully update user chat"
+                  data:
+                    type: object
+                    properties:
+                      chatId:
+                        type: string
+                        example: "67d66263b7ec6a2befc58c1d"
+                      model:
+                        type: string
+                        example: "qwen/qwq-32b:free"
+                      response:
+                        type: string
+                        example: "Shortness of breath can sometimes be associated with psoriasis."
+                      disease:
+                        type: string
+                        example: "Psoriasis"
+                      diseaseSource:
+                        type: string
+                        example: "Intersystems IRIS"
 components:
   securitySchemes:
     bearerAuth:
