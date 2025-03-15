@@ -28,7 +28,7 @@ const create = async (req, res) => {
                 await getUser.save();
 
                 const newService = new Service({
-                    email: email
+                    email: req.user.email
                 });
                 await newService.save();
 
