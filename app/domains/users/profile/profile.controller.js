@@ -1,5 +1,3 @@
-const { get } = require('mongoose');
-
 const User = require('../entities/user.model').User;
 const Service = require('../../services/entities/services.model').Service;
 
