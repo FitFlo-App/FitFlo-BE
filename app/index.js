@@ -3,10 +3,10 @@ require('dotenv').config();
 const mongodb = require('./configs/database/mongodb/mongodb.client');
 mongodb.connectDB();
 
-const redisClient = require('./configs/cache/redis/redis.client').client;
-redisClient.connect()
-  .then(() => console.log('Connected to Redis'))
-  .catch((err) => console.error('Failed to connect to Redis:', err));
+// const redisClient = require('./configs/cache/redis/redis.client').client;
+// redisClient.connect()
+//   .then(() => console.log('Connected to Redis'))
+//   .catch((err) => console.error('Failed to connect to Redis:', err));
 
 const iris = require('./configs/database/iris/iris.client');
 
