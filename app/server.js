@@ -16,8 +16,8 @@ app.use(cors({
         'http://localhost:8080',
         'http://localhost:4173',
         'http://localhost:5173',
-        'https://fitflo.site',
-        'https://api.fitflo.site'
+        'https://fitflo.faizath.com',
+        'https://fitflo-api.faizath.com'
     ],
 }));
 app.use(session({

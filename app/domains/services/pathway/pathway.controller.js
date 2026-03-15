@@ -63,7 +63,7 @@ const create = async (req, res) => {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
-                'HTTP-Referer': 'https://api.fitflo.site',
+                'HTTP-Referer': 'https://fitflo-api.faizath.com',
                 'X-Title': 'FitFlo AI Health Path Optimizer',
             },
             body: JSON.stringify(requestBody),
@@ -228,7 +228,7 @@ const update = async (req, res) => {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
-                'HTTP-Referer': 'https://api.fitflo.site',
+                'HTTP-Referer': 'https://fitflo-api.faizath.com',
                 'X-Title': 'FitFlo AI Health Path Optimizer',
             },
             body: JSON.stringify(requestBody),

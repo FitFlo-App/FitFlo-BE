@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "FitFlo AI Health Path Optimizer Back-End",
   "license": "MIT",
-  "author": "FitFlo Developers <dev@fitflo.site>",
+  "author": "FitFlo Developers <fitflo@faizath.com>",
   "type": "commonjs",
   "main": "app/index.js",
   "scripts": {
@@ -22,12 +22,15 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.12.1",
     "natural": "^8.0.1",
-    "nodemailer": "^6.10.0",
+    "nodemailer": "^8.0.2",
     "passport": "^0.7.0",
     "passport-google-oauth2": "^0.2.0",
     "redis": "^4.7.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"
+  },
+  "overrides": {
+    "tar": "^7.5.11"
   }
 }

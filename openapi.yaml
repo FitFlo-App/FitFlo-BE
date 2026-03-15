@@ -4,7 +4,7 @@ info:
   description: API for FitFlo AI Health Path Optimizer
   version: 1.0.0
 servers:
-  - url: https://api.fitflo.site
+  - url: https://fitflo-api.faizath.com
     description: Production Server
   - url: http://localhost:8080
     description: Local Development Server
@@ -45,7 +45,7 @@ paths:
                       verificationCheck:
                         type: string
                         format: URL
-                        example: https://api.fitflo.site/user/auth/email/activation?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRldkBmaXRmbG8uc2l0ZSIsImlzVmVyaWZpZWQiOmZhbHNlLCJpYXQiOjE3NDE5MTY3MzEsImV4cCI6MTc0MTkzMTEzMX0.0pilDYxCLIuFT1JG9wZ2TGFzgUIhwTMbDOQ6YzUknJs
+                        example: https://fitflo-api.faizath.com/user/auth/email/activation?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRldkBmaXRmbG8uc2l0ZSIsImlzVmVyaWZpZWQiOmZhbHNlLCJpYXQiOjE3NDE5MTY3MzEsImV4cCI6MTc0MTkzMTEzMX0.0pilDYxCLIuFT1JG9wZ2TGFzgUIhwTMbDOQ6YzUknJs
         "400":
           description: Email already verified or requesting verification too frequent
           content:
@@ -93,7 +93,7 @@ paths:
                       email:
                         type: string
                         format: email
-                        example: dev@fitflo.site
+                        example: fitflo@faizath.com
                       isVerified:
                         type: boolean
                         example: true
@@ -116,7 +116,7 @@ paths:
                       email:
                         type: string
                         format: email
-                        example: dev@fitflo.site
+                        example: fitflo@faizath.com
                       isVerified:
                         type: boolean
                         example: false
@@ -160,7 +160,7 @@ paths:
                       email:
                         type: string
                         format: email
-                        example: dev@fitflo.site
+                        example: fitflo@faizath.com
                       token:
                         type: string
                         example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRldkBmaXRmbG8uc2l0ZSIsImF1dGgiOiJlbWFpbCIsImlhdCI6MTc0MTkxNjc3NiwiZXhwIjoxNzQxOTMxMTc2fQ.kvBAlh25YCECL1X4qn5ye2U8jMRhl_alOAd98rz22JY
@@ -219,7 +219,7 @@ paths:
                       email:
                         type: string
                         format: email
-                        example: dev@fitflo.site
+                        example: fitflo@faizath.com
                       token:
                         type: string
                         example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRldkBmaXRmbG8uc2l0ZSIsImF1dGgiOiJlbWFpbCIsImlhdCI6MTc0MTkxNjc3NiwiZXhwIjoxNzQxOTMxMTc2fQ.kvBAlh25YCECL1X4qn5ye2U8jMRhl_alOAd98rz22JY
