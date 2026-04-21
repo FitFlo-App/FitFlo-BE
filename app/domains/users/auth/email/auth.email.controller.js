@@ -60,7 +60,7 @@ const verify = async (req, res) => {
         });
         
         await mailsender.sendmail({
-            fromaddres: 'FitFlo <fitflo@mail.faizath.com>',
+            fromaddres: process.env.EMAIL_SENDER,
             receipients: email,
             subject: 'Sign in to FitFlo',
             message: `Hi\n\nPlease click the following link to verify your account registration at FitFlo\n\n\n${req.get('host') == "localhost:" + (process.env.PORT || "8080") ? "http" : "https"}://${req.get('host')}/user/auth/email/activate?token=${encodeURIComponent(verificationToken)}\n\n\nIf you did not initiate this registration request, please disregard this email.\n\nThank You.\n\n\n`,
@@ -352,7 +352,7 @@ const forgot = async (req, res) => {
         });
 
         await mailsender.sendmail({
-            fromaddres: 'FitFlo <fitflo@mail.faizath.com>',
+            fromaddres: process.env.EMAIL_SENDER,
             receipients: email,
             subject: 'Password Reset for FitFlo',
             message: `Hi\n\nPlease click the following link to reset your password at FitFlo\n\n\n${process.env.FE_HOST}/changepassword?token=${encodeURIComponent(verificationToken)}\n\n\nIf you did not initiate this request, please disregard this email.\n\nThank You.\n\n\n`,

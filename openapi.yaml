@@ -93,7 +93,7 @@ paths:
                       email:
                         type: string
                         format: email
-                        example: fitflo@faizath.com
+                        example: contact@fitflo.faizath.com
                       isVerified:
                         type: boolean
                         example: true
@@ -116,7 +116,7 @@ paths:
                       email:
                         type: string
                         format: email
-                        example: fitflo@faizath.com
+                        example: contact@fitflo.faizath.com
                       isVerified:
                         type: boolean
                         example: false
@@ -160,7 +160,7 @@ paths:
                       email:
                         type: string
                         format: email
-                        example: fitflo@faizath.com
+                        example: contact@fitflo.faizath.com
                       token:
                         type: string
                         example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRldkBmaXRmbG8uc2l0ZSIsImF1dGgiOiJlbWFpbCIsImlhdCI6MTc0MTkxNjc3NiwiZXhwIjoxNzQxOTMxMTc2fQ.kvBAlh25YCECL1X4qn5ye2U8jMRhl_alOAd98rz22JY
@@ -219,7 +219,7 @@ paths:
                       email:
                         type: string
                         format: email
-                        example: fitflo@faizath.com
+                        example: contact@fitflo.faizath.com
                       token:
                         type: string
                         example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRldkBmaXRmbG8uc2l0ZSIsImF1dGgiOiJlbWFpbCIsImlhdCI6MTc0MTkxNjc3NiwiZXhwIjoxNzQxOTMxMTc2fQ.kvBAlh25YCECL1X4qn5ye2U8jMRhl_alOAd98rz22JY

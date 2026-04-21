@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "FitFlo AI Health Path Optimizer Back-End",
   "license": "MIT",
-  "author": "FitFlo Developers <fitflo@faizath.com>",
+  "author": "FitFlo Developers <dev@fitflo.faizath.com>",
   "type": "commonjs",
   "main": "app/index.js",
   "scripts": {
