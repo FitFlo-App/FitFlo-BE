@@ -6,7 +6,9 @@
         <p>Since <b>13 March 2026</b>, FitFlo has transitioned to new domains as <code>fitflo.site</code> was not renewed:</p>
         <p>🌐 <b>Website:</b> <a href="https://fitflo.faizath.com">fitflo.faizath.com</a> (formerly <i>fitflo.site</i>)<br>
         ⚙️ <b>API:</b> <a href="https://fitflo-api.faizath.com">fitflo-api.faizath.com</a> (formerly <i>api.fitflo.site</i>)<br>
-        📧 <b>Email:</b> <code>contact@fitflo.faizath.com</code> (formerly <i>@fitflo.site</i>)</p>
+        📧 <b>Email:</b> <a href="mailto:contact@fitflo.faizath.com">contact@fitflo.faizath.com</a> (formerly <i>contact@fitflo.site</i>)<br>
+        📈 <b>Status Pages:</b> <a href="https://status.faizath.com/status/fitflo">https://status.faizath.com/status/fitflo</a> (formerly <i>status.fitflo.site</i>)
+        </p>
       </td>
     </tr>
   </table>
