@@ -61,6 +61,18 @@ FitFlo leverages AI and real-time data analytics to:
 
 ---
 
+## 🎬 Demo
+
+<p align="center">
+  <a href="https://drive.google.com/file/d/1xGase8xRpvJcCL7BDdFgo6Jpxr_Z6SsA/preview">
+    <img src="assets/demo.gif" alt="FitFlo Demo" width="100%" />
+  </a>
+  <br />
+  <em>▶️ <a href="https://drive.google.com/file/d/1xGase8xRpvJcCL7BDdFgo6Jpxr_Z6SsA/preview">Click the GIF above to watch the full demo video</a></em>
+</p>
+
+---
+
 ## 🚀 Live Links & Repositories
 
 | Component | Repository | Deployment |
